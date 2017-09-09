@@ -1,11 +1,47 @@
 <template>
-  <!--<div class="tab" id="app">
-    <h1>{{ msg }}</h1>
+  <div class="tab" id="app">
+    <div class="p-3 mb-2 bg-primary text-white">
+    <div class="row">
 
-    <ul>
-      <li><button class="tablinks" name="paciente" v-on:click="verPacientes">Pacientes</button></li>
-      <li><button class="tablinks" name="medicamento" v-on:click="verMedicamentos">Medicamentos</button></li>
+    <h1>Recetas Electrónicas</h1>
+
+    <div class="board-inner">
+
+    <ul class="nav nav-tabs" id="myTab">
+
+       <div class="btn-group btn-justified">
+
+      <li>
+        <button class="tablinks justified" name="home">
+          <span class="round-tabs one">
+            <i class="glyphicon glyphicon-home"></i>
+          </span>
+        </button>
+      </li>
+
+       <li>
+        <button class="tablinks" name="medicamentos" v-on:click="verMedicamentos">
+          <span class="round-tabs one">
+            <i class="glyphicon glyphicon-barcode"></i>
+          </span>
+        </button>
+      </li>
+
+       <li>
+        <button class="tablinks" name="pacientes" v-on:click="verPacientes">
+          <span class="round-tabs one">
+            <i class="glyphicon glyphicon-user"></i>
+          </span>
+        </button>
+      </li>
+
+      </div>
+
     </ul>
+
+    </div>
+    </div>
+    </div>
 
     <div name="mdPaciente">
       <maestrodetallePaciente v-show="mdPacientesVisible"></maestrodetallePaciente>
@@ -13,125 +49,23 @@
     <div name="mdMedicamento">
       <maestrodetalleMedicamento v-show="mdMedicamentosVisible"></maestrodetalleMedicamento>
     </div>
-  </div>-->
-
-
-<section style="background:#efefe9;">
-        <div class="container">
-            <div class="row">
-                <div class="board">
-                    <!-- <h2>Welcome to IGHALO!<sup>™</sup></h2>-->
-                    <div class="board-inner">
-                    <ul class="nav nav-tabs" id="myTab">
-                    <div class="liner"></div>
-                     <li class="active">
-                     <a href="#home" data-toggle="tab" title="welcome">
-                      <span class="round-tabs one">
-                              <i class="glyphicon glyphicon-home"></i>
-                      </span> 
-                  </a></li>
-
-                  <li><a href="#profile" data-toggle="tab" title="profile">
-                     <span class="round-tabs two">
-                         <i class="glyphicon glyphicon-user"></i>
-                     </span> 
-           </a>
-                 </li>
-                 <li><a href="#messages" data-toggle="tab" title="bootsnipp goodies">
-                     <span class="round-tabs three">
-                          <i class="glyphicon glyphicon-gift"></i>
-                     </span> </a>
-                     </li>
-
-                     <li><a href="#settings" data-toggle="tab" title="blah blah">
-                         <span class="round-tabs four">
-                              <i class="glyphicon glyphicon-comment"></i>
-                         </span> 
-                     </a></li>
-
-                     <li><a href="#doner" data-toggle="tab" title="completed">
-                         <span class="round-tabs five">
-                              <i class="glyphicon glyphicon-ok"></i>
-                         </span> </a>
-                     </li>
-                     
-                     </ul></div>
-
-                     <div class="tab-content">
-                      <div class="tab-pane fade in active" id="home">
-
-                          <h3 class="head text-center">Welcome to Bootsnipp<sup>™</sup> <span style="color:#f48260;">♥</span></h3>
-                          <p class="narrow text-center">
-                              Lorem ipsum dolor sit amet, his ea mollis fabellas principes. Quo mazim facilis tincidunt ut, utinam saperet facilisi an vim.
-                          </p>
-                          
-                          <p class="text-center">
-                    <a href="" class="btn btn-success btn-outline-rounded green"> start using bootsnipp <span style="margin-left:10px;" class="glyphicon glyphicon-send"></span></a>
-                </p>
-                      </div>
-                      <div class="tab-pane fade" id="profile">
-                          <h3 class="head text-center">Create a Bootsnipp<sup>™</sup> Profile</h3>
-                          <p class="narrow text-center">
-                              Lorem ipsum dolor sit amet, his ea mollis fabellas principes. Quo mazim facilis tincidunt ut, utinam saperet facilisi an vim.
-                          </p>
-                          
-                          <p class="text-center">
-                    <a href="" class="btn btn-success btn-outline-rounded green"> create your profile <span style="margin-left:10px;" class="glyphicon glyphicon-send"></span></a>
-                </p>
-                          
-                      </div>
-                      <div class="tab-pane fade" id="messages">
-                          <h3 class="head text-center">Bootsnipp goodies</h3>
-                          <p class="narrow text-center">
-                              Lorem ipsum dolor sit amet, his ea mollis fabellas principes. Quo mazim facilis tincidunt ut, utinam saperet facilisi an vim.
-                          </p>
-                          
-                          <p class="text-center">
-                    <a href="" class="btn btn-success btn-outline-rounded green"> start using bootsnipp <span style="margin-left:10px;" class="glyphicon glyphicon-send"></span></a>
-                </p>
-                      </div>
-                      <div class="tab-pane fade" id="settings">
-                          <h3 class="head text-center">Drop comments!</h3>
-                          <p class="narrow text-center">
-                              Lorem ipsum dolor sit amet, his ea mollis fabellas principes. Quo mazim facilis tincidunt ut, utinam saperet facilisi an vim.
-                          </p>
-                          
-                          <p class="text-center">
-                    <a href="" class="btn btn-success btn-outline-rounded green"> start using bootsnipp <span style="margin-left:10px;" class="glyphicon glyphicon-send"></span></a>
-                </p>
-                      </div>
-                      <div class="tab-pane fade" id="doner">
-  <div class="text-center">
-    <i class="img-intro icon-checkmark-circle"></i>
-</div>
-<h3 class="head text-center">thanks for staying tuned! <span style="color:#f48260;">♥</span> Bootstrap</h3>
-<p class="narrow text-center">
-  Lorem ipsum dolor sit amet, his ea mollis fabellas principes. Quo mazim facilis tincidunt ut, utinam saperet facilisi an vim.
-</p>
-</div>
-<div class="clearfix"></div>
-</div>
-
-</div>
-</div>
-</div>
-</section>
+    
+  </div>
 
 </template>
 
 <script>
 
-/*
+
 import maestrodetallePaciente from './components/MaestroDetallePaciente.vue'
-import maestrodetalleMedicamento from './components/maestrodetalleMedicamento.vue'
+import maestrodetalleMedicamento from './components/MaestroDetalleMedicamento.vue'
 
 export default {
   name: 'app',
   data () {
     return {
-      mdPeliculasVisible : false,
-      mdEntradasVisible: false,
-      msg: 'Bienvenido al Maestro - Detalle',
+      mdPacientesVisible : false,
+      mdMedicamentosVisible: false,
       datos: {
         //disable: true;
         //entradas: [],
@@ -143,42 +77,42 @@ export default {
     }
   },
   components: {
-    maestrodetalleEntrada, maestrodetallePelicula
+    maestrodetalleMedicamento, maestrodetallePaciente
   },
 
   methods: {
 
-      verEntradas: function()
+      verPacientes: function()
       {
-        if(this.mdEntradasVisible == false)
+        if(this.mdPacientesVisible == false)
         {
-          this.mdEntradasVisible = true;
-          this.mdPeliculasVisible = false;
+          this.mdPacientesVisible = true;
+          this.mdMedicamentosVisible = false;
         }
-        else if(this.mdEntradasVisible == true)
+        else if(this.mdPacientesVisible == true)
         {
-          this.mdEntradasVisible = false;
-          this.mdPeliculasVisible = false;
+          this.mdPacientesVisible = false;
+          this.mdMedicamentosVisible = false;
         }
         
       },
 
-      verPeliculas: function()
+      verMedicamentos: function()
       {
-        if(this.mdPeliculasVisible == false)
+        if(this.mdMedicamentosVisible == false)
         {
-          this.mdPeliculasVisible = true;
-          this.mdEntradasVisible = false;
+          this.mdMedicamentosVisible = true;
+          this.mdPacientesVisible = false;
         }
-        else if(this.mdPeliculasVisible == true)
+        else if(this.mdMedicamentosVisible == true)
         {
-          this.mdPeliculasVisible = false;
-          this.mdEntradasVisible = false;
+          this.mdMedicamentosVisible = false;
+          this.mdPacientesVisible = false;
         }
       }
         
     }
-}*/
+}
 </script>
 
 
