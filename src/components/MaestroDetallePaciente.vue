@@ -26,7 +26,7 @@
                     <h1 v-show="modoDetalle"> Paciente : </h1>
                 </li>
                 <li>
-                    <h1 v-show="modoNuevo"> Nueva Paciente : </h1>
+                    <h1 v-show="modoNuevo"> Nuevo Paciente : </h1>
                 </li>
                 <li>
                     <label for="nombreP"> Nombre: </label>
@@ -114,8 +114,8 @@ export default {
             }
             else if(this.disable == true && mode == "eliminar")
             {
-                this.disable = false;
-                this.eliminarEntrada();
+                //this.disable = false;
+                this.eliminarPaciente();
 
             }
             else if(this.disable = false)
@@ -130,7 +130,7 @@ export default {
 
             $.ajax({
               type: "POST",
-              url: "http://localhost:51673/api/Pacientes",
+              url: "http://localhost:51847/api/Pacientes",
               data: { Nombre: _this.paciente.Nombre, Apellidos: _this.paciente.Apellidos, Sexo: _this.paciente.Sexo, 
                 Edad: _this.paciente.Edad, DescripcionDolencia: _this.paciente.DescripcionDolencia, 
                 DuracionTratamiento: _this.paciente.DuracionTratamiento},
@@ -163,7 +163,7 @@ export default {
             $.ajax({
 
               type: "DELETE",
-              url: "http://localhost:51673/api/Pacientes/" + _this.paciente.Id,
+              url: "http://localhost:51847/api/Pacientes/" + _this.paciente.Id,
               data: { Id: _this.paciente.Id }
 
             })
@@ -194,7 +194,7 @@ export default {
             $.ajax({
 
             type: "PUT",
-            url: "http://localhost:51673/api/Pacientes/" + _this.paciente.Id,
+            url: "http://localhost:51847/api/Pacientes/" + _this.paciente.Id,
             data: _this.paciente,
 
             })
@@ -229,7 +229,7 @@ export default {
                 var _this = this;
                 $.ajax(
                 {
-                  url : "http://localhost:51673/api/Pacientes/" + id,
+                  url : "http://localhost:51847/api/Pacientes/" + id,
                   type: "GET",
                 })
                 .done(function(data) {
@@ -254,7 +254,7 @@ export default {
            var _this = this;
           $.ajax(
             {
-              url : "http://localhost:51673/api/Pacientes",
+              url : "http://localhost:51847/api/Pacientes",
               type: "GET",
             })
             .done(function(data) {
@@ -304,7 +304,7 @@ export default {
           var _this = this;
           $.ajax(
             {
-              url : "http://localhost:51673/api/Pacientes",
+              url : "http://localhost:51847/api/Pacientes",
               type: "GET",
             })
             .done(function(data) {

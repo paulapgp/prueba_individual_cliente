@@ -105,8 +105,8 @@ export default {
             }
             else if(this.disable == true && mode == "eliminar")
             {
-                this.disable = false;
-                this.eliminarEntrada();
+                //this.disable = false;
+                this.eliminarMedicamento();
 
             }
             else if(this.disable = false)
@@ -121,7 +121,7 @@ export default {
 
             $.ajax({
               type: "POST",
-              url: "http://localhost:51673/api/Medicamentos",
+              url: "http://localhost:51847/api/Medicamentos",
               data: { Nombre: _this.medicamento.Nombre, Tipo: _this.medicamento.Tipo, Presentacion: _this.medicamento.Presentacion, FechaCaducidad: _this.medicamento.FechaCaducidad},
             })
             .done(function(data) {
@@ -152,7 +152,7 @@ export default {
             $.ajax({
 
               type: "DELETE",
-              url: "http://localhost:51673/api/Medicamentos/" + _this.medicamento.Id,
+              url: "http://localhost:51847/api/Medicamentos/" + _this.medicamento.Id,
               data: { Id: _this.medicamento.Id }
 
             })
@@ -183,7 +183,7 @@ export default {
             $.ajax({
 
             type: "PUT",
-            url: "http://localhost:51673/api/Medicamentos/" + _this.medicamento.Id,
+            url: "http://localhost:51847/api/Medicamentos/" + _this.medicamento.Id,
             data: _this.medicamento,
 
             })
@@ -218,7 +218,7 @@ export default {
                 var _this = this;
                 $.ajax(
                 {
-                  url : "http://localhost:51673/api/Medicamentos/" + id,
+                  url : "http://localhost:51847/api/Medicamentos/" + id,
                   type: "GET",
                 })
                 .done(function(data) {
@@ -241,7 +241,7 @@ export default {
            var _this = this;
           $.ajax(
             {
-              url : "http://localhost:51673/api/Medicamentos",
+              url : "http://localhost:51847/api/Medicamentos",
               type: "GET",
             })
             .done(function(data) {
@@ -291,7 +291,7 @@ export default {
           var _this = this;
           $.ajax(
             {
-              url : "http://localhost:51673/api/Medicamentos",
+              url : "http://localhost:51847/api/Medicamentos",
               type: "GET",
             })
             .done(function(data) {
