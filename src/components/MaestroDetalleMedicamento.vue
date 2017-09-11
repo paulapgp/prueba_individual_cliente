@@ -38,9 +38,6 @@
                     <h1 v-show="modoNuevo"> Nueva Medicamento : </h1>
                 </li>
                 <li>
-
-                    
-
                     <label for="nombreM"> Nombre: </label>
                     <input type="text" name="nombreM" value="Nombre" v-model="medicamento.Nombre" v-bind:disabled="disable">
                     
@@ -60,11 +57,11 @@
                     
                     <br>
                     <br>
-                    <button v-on:click="crearMedicamento" v-show="btnAceptarCancelar">Aceptar</button>
+                    <button v-on:click="validarMedicamento(modos.crear)" v-show="btnAceptarCancelar">Aceptar</button>
                     <button v-on:click="cancelar" v-show="btnAceptarCancelar">Cancelar</button>
 
                     <br>
-                    <button v-on:click="actualizar" v-show="btnACtCancelar">Actualizar</button>
+                    <button v-on:click="validarMedicamento(modos.actualizar)" v-show="btnACtCancelar">Actualizar</button>
                     <button v-on:click="cancelar" v-show="btnACtCancelar">Cancelar</button>
 
                 </li> 
@@ -94,7 +91,7 @@ export default {
             modoNuevo: false,
             modoDetalle: true,
             medicamento: {Id: "", Nombre: "", Tipo: "", Presentacion: "", FechaCaducidad: ""},
-            modos: {editar: "editar", eliminar: "eliminar", nuevo: "nuevo"}
+            modos: {editar: "editar", eliminar: "eliminar", nuevo: "nuevo", crear : "crear", actualizar : "actualizar"}
         };
     },
     methods: {
@@ -136,29 +133,30 @@ export default {
         {
             var _this = this;
 
-            $.ajax({
-              type: "POST",
-              url: "http://localhost:51847/api/Medicamentos",
-              data: { Nombre: _this.medicamento.Nombre, Tipo: _this.medicamento.Tipo, Presentacion: _this.medicamento.Presentacion, FechaCaducidad: _this.medicamento.FechaCaducidad},
-            })
-            .done(function(data) {
+                $.ajax({
+                  type: "POST",
+                  url: "http://localhost:51847/api/Medicamentos",
+                  data: { Nombre: _this.medicamento.Nombre, Tipo: _this.medicamento.Tipo, Presentacion: _this.medicamento.Presentacion, FechaCaducidad: _this.medicamento.FechaCaducidad},
+                })
+                .done(function(data) {
 
-             
-              _this.refreshList();
-               _this.mostrarMsgOk("creado");
-              _this.limpiarCampos();
-              _this.modoNuevo = false;
-              _this.modoDetalle = true;
-              _this.btnAceptarCancelar = false;
-              _this.btnACtCancelar = false;
-              _this.disable = true;
-              _this.mostrarDetallesContenedor = false;
-              
+                 
+                  _this.refreshList();
+                  _this.mostrarMsgOk("creado");
+                  _this.msgKo = false;
+                  _this.limpiarCampos();
+                  _this.modoNuevo = false;
+                  _this.modoDetalle = true;
+                  _this.btnAceptarCancelar = false;
+                  _this.btnACtCancelar = false;
+                  _this.disable = true;
+                  _this.mostrarDetallesContenedor = false;
+                  
 
-          })
-          .fail(function(data) {
-              _this.mostrarMsgKo("creado");
-          });
+                })
+                .fail(function(data) {
+                    _this.mostrarMsgKo("creado");
+                });
 
         },
 
@@ -178,6 +176,7 @@ export default {
               
               _this.refreshList();
               _this.mostrarMsgOk("eliminado");
+              _this.msgKo = false;
               _this.limpiarCampos();
               _this.modoNuevo = false;
               _this.modoDetalle = true;
@@ -208,6 +207,7 @@ export default {
 
                 _this.refreshList();
                 _this.mostrarMsgOk("actualizado");
+                _this.msgKo = false;
                 _this.limpiarCampos();
                 _this.modoNuevo = false;
                 _this.modoDetalle = true;
@@ -282,6 +282,8 @@ export default {
 
             _this.refreshList();
             _this.limpiarCampos();
+            _this.msgKo = false;
+            _this.msgOk = false;
             _this.modoNuevo = false;
             _this.modoDetalle = true;
             _this.btnAceptarCancelar = false;
@@ -296,6 +298,8 @@ export default {
 
             _this.refreshList();
             _this.limpiarCampos();
+            _this.msgKo = false;
+            _this.msgOk = false;
             _this.modoNuevo = false;
             _this.modoDetalle = true;
             _this.btnAceptarCancelar = false;
@@ -362,6 +366,47 @@ export default {
             
           }
 
+        },
+
+        validarMedicamento: function(data)
+        {
+          if(this.medicamento.Nombre == '')
+          {
+            this.msg = "El nombre del medicamento no puede estar vacío."
+            this.msgKo = true;
+          }
+          else if (this.medicamento.Nombre.length <= 0 || this.medicamento.Nombre.length >= 31)
+          {
+            this.msg = "El nombre del medicamento debe tener entre 1 y 30 caracteres."
+            this.msgKo = true;
+          }
+          else if (this.medicamento.Tipo == '')
+          {
+            this.msg = "El tipo del medicamento no puede estar vacío."
+            this.msgKo = true;
+          }
+          else if (this.medicamento.Presentacion == '')
+          {
+            this.msg = "Debe seleccionar un valor de presentacion del medicamento."
+            this.msgKo = true;
+          }
+          else if (this.medicamento.FechaCaducidad == '')
+          {
+            this.msg = "La fecha de caducidad no es correcta, seleccione una de nuevo."
+            this.msgKo = true;
+          }
+          else
+          {
+            if(data == "crear")
+            {
+              this.crearMedicamento();
+            }
+            else if(data == "actualizar")
+            {
+              this.actualizar();
+            }
+            
+          }
         },
 
         nuevaFuncion: function()
