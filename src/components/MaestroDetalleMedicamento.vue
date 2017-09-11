@@ -1,6 +1,17 @@
 <template>
     <div id="maestrodetalleMedicamento">
 
+       <div class="alert alert-success alert-dismissable" v-show="this.msgOk" style="font-size: 18px; bold;">
+          <button type="button" class="close btn-sm" data-dismiss="alert" v-on:click.stop.prevent = "nuevaFuncion">&times;</button>
+          <i class="glyphicon glyphicon-ok"> &nbsp; </i> <strong>{{msg}}</strong>
+        </div>
+
+        <div class="alert alert-danger alert-dismissable" v-show="this.msgKo" style="font-size: 16px;">
+          <button type="button" class="close" data-dismiss="alert" v-on:click.stop.prevent = "nuevaFuncion">&times;</button>
+          <i class="glyphicon glyphicon-remove"> &nbsp; </i> {{msg}}
+        </div>
+
+
         <div name="listaMedicamentos">
             <ul>
                 <li>
@@ -27,6 +38,9 @@
                     <h1 v-show="modoNuevo"> Nueva Medicamento : </h1>
                 </li>
                 <li>
+
+                    
+
                     <label for="nombreM"> Nombre: </label>
                     <input type="text" name="nombreM" value="Nombre" v-model="medicamento.Nombre" v-bind:disabled="disable">
                     
@@ -68,6 +82,9 @@ export default {
     data() {
         return {
 
+            msg: "",
+            msgOk: false,
+            msgKo: false,
             mostrarDetallesContenedor: false,
             disable: true,
             medicamentos: [],
@@ -126,9 +143,9 @@ export default {
             })
             .done(function(data) {
 
-              alert( "Creado el medicamento -> " + "Id: " + data.Id + " Nombre: " + data.Nombre + " Tipo: " + data.Tipo + " Presentacion: " + data.Presentacion + "Fecha de Caducidad" + data.FechaCaducidad);
-
+             
               _this.refreshList();
+               _this.mostrarMsgOk("creado");
               _this.limpiarCampos();
               _this.modoNuevo = false;
               _this.modoDetalle = true;
@@ -140,7 +157,7 @@ export default {
 
           })
           .fail(function(data) {
-              alert( "ERROR, No se ha podido crear el Medicamento" );
+              _this.mostrarMsgKo("creado");
           });
 
         },
@@ -158,9 +175,9 @@ export default {
             })
             .done(function(data) {
 
-              alert( "Eliminado el medicamento -> " + "Id: " + data.Id + " Nombre: " + data.Nombre + " Tipo: " + data.Tipo + " Presentacion: " + data.Presentacion + "Fecha de Caducidad" + data.FechaCaducidad);
-
+              
               _this.refreshList();
+              _this.mostrarMsgOk("eliminado");
               _this.limpiarCampos();
               _this.modoNuevo = false;
               _this.modoDetalle = true;
@@ -171,7 +188,7 @@ export default {
 
             })
             .fail(function(data) {
-              alert( "ERROR, al eliminar el Medicamento" );
+              _this.mostrarMsgKo("eliminado");
           });
 
         },
@@ -189,8 +206,8 @@ export default {
             })
             .done(function(data) {
 
-                alert( "Se ha actualizado el Medicamento");
                 _this.refreshList();
+                _this.mostrarMsgOk("actualizado");
                 _this.limpiarCampos();
                 _this.modoNuevo = false;
                 _this.modoDetalle = true;
@@ -201,7 +218,7 @@ export default {
                 
             })
             .fail(function(data) {
-                alert( "ERROR, al actualizar el Medicamento" );
+                _this.mostrarMsgKo("actualizado");
             });
 
         },
@@ -231,7 +248,7 @@ export default {
 
                 })
                 .fail(function(data) {
-                        alert( "error" );
+                        _this.mostrarMsgKo("error");
                       });
           },
 
@@ -239,16 +256,18 @@ export default {
           {
 
            var _this = this;
+
           $.ajax(
             {
               url : "http://localhost:51847/api/Medicamentos",
               type: "GET",
             })
             .done(function(data) {
+
               _this.medicamentos = data;
             })
             .fail(function(data) {
-                    alert( "error" );
+                    _this.mostrarMsgKo( "error" );
                   });
           },
 
@@ -283,6 +302,72 @@ export default {
             _this.btnACtCancelar = false;
             _this.disable = true;
             _this.mostrarDetallesContenedor = false;
+        },
+
+        mostrarMsgOk: function(data)
+        {
+          //var _this = this;
+
+          if(data == "creado")
+          {
+            this.msg = "¡ El Medicamento ha sido creado con éxito !"
+            this.msgOk = true;
+
+          }else if (data == "actualizado")
+          {
+            
+            this.msg = "¡ El Medicamento ha sido actualizado con éxito !"
+            this.msgOk = true;
+
+          } else if(data == "eliminado")
+          {
+           
+            this.msg = "¡ El Medicamento se ha eliminado con éxito !"
+            this.msgOk = true;
+            
+          } else if(data == "error")
+          {
+            
+            this.msg = "¡ Ha ocurrido un error, vuelva a intentarlo !"
+            this.msgOk = true;
+            
+          }
+
+        },
+
+        mostrarMsgKo: function(data)
+        {
+          if(data == "creado")
+          {
+            this.msg = "Error al crear el Medicamento, vuelva a intentarlo."
+            this.msgKo = true;
+
+          }else if (data == "actualizado")
+          {
+            
+            this.msg = "Error al actualizar el Medicamento, vuelva a intentarlo."
+            this.msgKo = true;
+
+          } else if(data == "eliminado")
+          {
+           
+            this.msg = "Error al eliminar el Medicamento, vuelva a intentarlo."
+            this.msgKo = true;
+            
+          } else if(data == "error")
+          {
+            
+            this.msg = "Se ha producido un error, vuelva a intentarlo."
+            this.msgKo = true;
+            
+          }
+
+        },
+
+        nuevaFuncion: function()
+        {
+          this.msgOk = false;
+          this.msgKo = false;
         }
 
     },
