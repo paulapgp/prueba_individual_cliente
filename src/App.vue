@@ -9,10 +9,10 @@
 
     <ul class="nav nav-tabs" id="myTab">
 
-       <div class="btn-group btn-justified">
+       <div class="btn-group btn-group-lg">
 
       <li>
-        <button class="tablinks justified" name="home">
+        <button class="tablinks" name="home">
           <span class="round-tabs one">
             <i class="glyphicon glyphicon-home"></i>
           </span>

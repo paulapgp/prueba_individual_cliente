@@ -1,6 +1,17 @@
 <template>
     <div id="maestrodetallePaciente">
 
+        <div class="alert alert-success alert-dismissable" v-show="this.msgOk" style="font-size: 18px; bold;">
+          <button type="button" class="close btn-sm" data-dismiss="alert" v-on:click.stop.prevent = "nuevaFuncion">&times;</button>
+          <i class="glyphicon glyphicon-ok"> &nbsp; </i> <strong>{{msg}}</strong>
+        </div>
+
+        <div class="alert alert-danger alert-dismissable" v-show="this.msgKo" style="font-size: 16px;">
+          <button type="button" class="close" data-dismiss="alert" v-on:click.stop.prevent = "nuevaFuncion">&times;</button>
+          <i class="glyphicon glyphicon-remove"> &nbsp; </i> <strong>{{msg}}</strong>
+        </div>
+
+
         <div name="listaPacientes">
             <ul>
                 <li>
@@ -34,20 +45,30 @@
                     
                     <label for="apellidos"> Apellidos: </label>
                     <input type="text" name="apellidos" value="Apellidos" v-model="paciente.Apellidos" v-bind:disabled="disable">
-                   
-                    <label for="sexo"> Sexo: </label>
-                    <input type="text" name="sexo" value="Sexo" v-model="paciente.Sexo" v-bind:disabled="disable">
-                   
+
+                    <br>
+
                     <label for="edad"> Edad: </label>
                     <input type="numeric" name="edad" value="Edad" v-model="paciente.Edad" v-bind:disabled="disable">
+                   
+                    <label for="sexo"> Sexo: </label>
+                    <input type="radio" name="sexo" v-bind:disabled="disable" v-model="paciente.Sexo" value="Hombre"  :checked="paciente.Sexo"> Hombre
+                    <input type="radio" name="sexo" v-bind:disabled="disable" v-model="paciente.Sexo" value="Mujer" :checked="!paciente.Sexo"> Mujer
+                   
+                    <br>
 
                     <label for="descripcion"> Descripcion de la Dolencia: </label>
-                    <input type="text" name="descripcion" value="Descripcion" v-model="paciente.DescripcionDolencia" 
-                    v-bind:disabled="disable">
+                    <br>
+                    <textarea rows="3" style="background: white; resize: none; overflow: auto; text-overflow: ellipsis" 
+                    type="string" name="descripcion" v-bind:disabled="disable" v-model="paciente.DescripcionDolencia"> </textarea>
+
+                    <br>
 
                     <label for="duracion"> Duracion del tratamiento: (Dias) </label>
                     <input type="numeric" name="duracion" value="Duracion" v-model="paciente.DuracionTratamiento" 
                     v-bind:disabled="disable">
+
+                    <br>
 
                     <button v-on:click="editable(modos.editar)" v-show="btnEditElim">Editar</button>
                     <button v-on:click="editable(modos.eliminar)" v-show="btnEditElim">Eliminar</button>
@@ -55,11 +76,11 @@
                     
                     <br>
                     <br>
-                    <button v-on:click="crearPaciente" v-show="btnAceptarCancelar">Aceptar</button>
+                    <button v-on:click="validarPaciente(modos.crear)" v-show="btnAceptarCancelar">Aceptar</button>
                     <button v-on:click="cancelar" v-show="btnAceptarCancelar">Cancelar</button>
 
                     <br>
-                    <button v-on:click="actualizar" v-show="btnACtCancelar">Actualizar</button>
+                    <button v-on:click="validarPaciente(modos.actualizar)" v-show="btnACtCancelar">Actualizar</button>
                     <button v-on:click="cancelar" v-show="btnACtCancelar">Cancelar</button>
 
                 </li> 
@@ -77,6 +98,9 @@ export default {
     data() {
         return {
 
+            msg: "",
+            msgOk: false,
+            msgKo: false,
             mostrarDetallesContenedor: false,
             disable: true,
             pacientes: [],
@@ -86,7 +110,7 @@ export default {
             modoNuevo: false,
             modoDetalle: true,
             paciente: {Id: "", Nombre: "", Apellidos: "", Sexo: "", Edad: "", DescripcionDolencia: "", DuracionTratamiento: ""},
-            modos: {editar: "editar", eliminar: "eliminar", nuevo: "nuevo"}
+            modos: {editar: "editar", eliminar: "eliminar", nuevo: "nuevo", crear : "crear", actualizar : "actualizar"}
         };
     },
     methods: {
@@ -95,6 +119,8 @@ export default {
         {
             if(this.disable == true && mode == "editar")
             {
+                this.msgKo = false;
+                this.msgOk = false;
                 this.disable = false;
                 this.btnAceptarCancelar = false;
                 this.btnEditElim = false;
@@ -103,6 +129,8 @@ export default {
             }
             else if(this.disable == true && mode == "nuevo")
             {
+                this.msgKo = false;
+                this.msgOk = false;
                 this.modoNuevo = true;
                 this.modoDetalle = false;
                 this.mostrarDetallesContenedor = true;
@@ -115,11 +143,15 @@ export default {
             else if(this.disable == true && mode == "eliminar")
             {
                 //this.disable = false;
+                this.msgKo = false;
+                this.msgOk = false;
                 this.eliminarPaciente();
 
             }
             else if(this.disable = false)
             {
+                this.msgKo = false;
+                this.msgOk = false;
                 this.disable = true;
             }
         },
@@ -137,9 +169,9 @@ export default {
             })
             .done(function(data) {
 
-              alert( "Creado el paciente -> " + "Id: " + data.Id + " Nombre: " + data.Nombre + " Apellidos: " + data.Apellidos + " Sexo: " + data.Sexo + " Edad" + data.edad);
-
               _this.refreshList();
+              _this.mostrarMsgOk("creado");
+              _this.msgKo = false;
               _this.limpiarCampos();
               _this.modoNuevo = false;
               _this.modoDetalle = true;
@@ -151,7 +183,7 @@ export default {
 
           })
           .fail(function(data) {
-              alert( "ERROR, No se ha podido crear el Paciente" );
+              _this.mostrarMsgKo("creado");
           });
 
         },
@@ -169,9 +201,9 @@ export default {
             })
             .done(function(data) {
 
-              alert( "Eliminado el paciente -> " + "Id: " + data.Id + " Nombre: " + data.Nombre + " Apellidos: " + data.Apellidos + " Sexo: " + data.Sexo + " Edad" + data.edad);
-
               _this.refreshList();
+              _this.mostrarMsgOk("eliminado");
+              _this.msgKo = false;
               _this.limpiarCampos();
               _this.modoNuevo = false;
               _this.modoDetalle = true;
@@ -182,7 +214,7 @@ export default {
 
             })
             .fail(function(data) {
-              alert( "ERROR, al eliminar el Paciente" );
+              _this.mostrarMsgKo("eliminado");
           });
 
         },
@@ -200,8 +232,9 @@ export default {
             })
             .done(function(data) {
 
-                alert( "Se ha actualizado el Paciente");
                 _this.refreshList();
+                _this.mostrarMsgOk("actualizado");
+                _this.msgKo = false;
                 _this.limpiarCampos();
                 _this.modoNuevo = false;
                 _this.modoDetalle = true;
@@ -212,13 +245,16 @@ export default {
                 
             })
             .fail(function(data) {
-                alert( "ERROR, al actualizar el Paciente" );
+                _this.mostrarMsgKo("actualizado");
             });
 
         },
 
         mostrarDetalles: function(id)
         {
+
+                this.msgKo = false;
+                this.msgOk = false;
 
                 if (this.mostrarDetallesContenedor == false) 
                 {
@@ -244,7 +280,7 @@ export default {
 
                 })
                 .fail(function(data) {
-                        alert( "error" );
+                        _this.mostrarMsgKo("error");
                       });
           },
 
@@ -261,7 +297,7 @@ export default {
               _this.pacientes = data;
             })
             .fail(function(data) {
-                    alert( "error" );
+                    _this.mostrarMsgKo( "error" );
                   });
           },
 
@@ -276,6 +312,8 @@ export default {
 
             _this.refreshList();
             _this.limpiarCampos();
+            _this.msgKo = false;
+            _this.msgOk = false;
             _this.modoNuevo = false;
             _this.modoDetalle = true;
             _this.btnAceptarCancelar = false;
@@ -290,14 +328,135 @@ export default {
 
             _this.refreshList();
             _this.limpiarCampos();
+            _this.msgKo = false;
+            _this.msgOk = false;
             _this.modoNuevo = false;
             _this.modoDetalle = true;
             _this.btnAceptarCancelar = false;
             _this.btnACtCancelar = false;
             _this.disable = true;
             _this.mostrarDetallesContenedor = false;
-        }
+        },
 
+        mostrarMsgOk: function(data)
+        {
+
+          if(data == "creado")
+          {
+            this.msg = "¡ El Paciente ha sido creado con éxito !"
+            this.msgOk = true;
+
+          }else if (data == "actualizado")
+          {
+            
+            this.msg = "¡ El Paciente ha sido actualizado con éxito !"
+            this.msgOk = true;
+
+          } else if(data == "eliminado")
+          {
+           
+            this.msg = "¡ El Paciente se ha eliminado con éxito !"
+            this.msgOk = true;
+            
+          } else if(data == "error")
+          {
+            
+            this.msg = "¡ Ha ocurrido un error, vuelva a intentarlo !"
+            this.msgOk = true;
+            
+          }
+
+        },
+
+        mostrarMsgKo: function(data)
+        {
+          if(data == "creado")
+          {
+            this.msg = "Error al crear el Paciente, vuelva a intentarlo."
+            this.msgKo = true;
+
+          }else if (data == "actualizado")
+          {
+            
+            this.msg = "Error al actualizar el Paciente, vuelva a intentarlo."
+            this.msgKo = true;
+
+          } else if(data == "eliminado")
+          {
+           
+            this.msg = "Error al eliminar el Paciente, vuelva a intentarlo."
+            this.msgKo = true;
+            
+          } else if(data == "error")
+          {
+            
+            this.msg = "Se ha producido un error, vuelva a intentarlo."
+            this.msgKo = true;
+            
+          }
+
+        },
+
+        validarPaciente: function(data)
+        {
+          if(this.paciente.Nombre == '')
+          {
+            this.msg = "El nombre del paciente no puede estar vacío."
+            this.msgKo = true;
+          }
+          else if (this.paciente.Nombre.length <= 1 || this.paciente.Nombre.length >= 31)
+          {
+            this.msg = "El nombre del paciente debe tener entre 1 y 30 caracteres."
+            this.msgKo = true;
+          }
+          else if (this.paciente.Apellidos == '')
+          {
+            this.msg = "Los apellidos del paciente no pueden estar vacíos."
+            this.msgKo = true;
+          }
+          else if (this.paciente.Sexo == '')
+          {
+            this.msg = "Debe seleccionar el sexo del paciente."
+            this.msgKo = true;
+          }
+          else if ( !this.isInt(this.paciente.Edad) || this.paciente.Edad == '' || this.paciente.Edad < 1 || this.paciente.Edad > 99)
+          {
+            this.msg = "La edad del paciente debe ser un numero entre 1 y 100."
+            this.msgKo = true;
+          }
+          else if (this.paciente.DescripcionDolencia == '')
+          {
+            this.msg = "Por favor, escriba brevemente la dolencia del paciente."
+            this.msgKo = true;
+          }
+          else if (!this.isInt(this.paciente.DuracionTratamiento) || this.paciente.DuracionTratamiento == '')
+          {
+            this.msg = "La duracion del tratamiento no es correcta, introduzca la duracion en días."
+            this.msgKo = true;
+          }
+          else
+          {
+            if(data == "crear")
+            {
+              this.crearPaciente();
+            }
+            else if(data == "actualizar")
+            {
+              this.actualizar();
+            }
+            
+          }
+        },
+
+        nuevaFuncion: function()
+        {
+          this.msgOk = false;
+          this.msgKo = false;
+        },
+
+        isInt: function(n) {
+          return n % 1 === 0;
+        }
     },
 
    mounted: function() {
@@ -311,7 +470,7 @@ export default {
               _this.pacientes = data;
             })
             .fail(function(data) {
-                    alert( "error" );
+                    _this.mostrarMsgKo( "error" );
                   });
 
         }

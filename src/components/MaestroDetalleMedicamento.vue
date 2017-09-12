@@ -8,7 +8,7 @@
 
         <div class="alert alert-danger alert-dismissable" v-show="this.msgKo" style="font-size: 16px;">
           <button type="button" class="close" data-dismiss="alert" v-on:click.stop.prevent = "nuevaFuncion">&times;</button>
-          <i class="glyphicon glyphicon-remove"> &nbsp; </i> {{msg}}
+          <i class="glyphicon glyphicon-remove"> &nbsp; </i> <strong>{{msg}}</strong>
         </div>
 
 
@@ -35,7 +35,7 @@
                     <h1 v-show="modoDetalle"> Medicamento : </h1>
                 </li>
                 <li>
-                    <h1 v-show="modoNuevo"> Nueva Medicamento : </h1>
+                    <h1 v-show="modoNuevo"> Nuevo Medicamento : </h1>
                 </li>
                 <li>
                     <label for="nombreM"> Nombre: </label>
@@ -45,11 +45,21 @@
                     <input type="text" name="tipo" value="Tipo" v-model="medicamento.Tipo" v-bind:disabled="disable">
                    
                     <label for="presentacion"> Presentacion: </label>
-                    <input type="text" name="presentacion" value="Presentacion" v-model="medicamento.Presentacion" 
+                    <select class="w3-select w3-border" name="presentacion" value="Presentacion" v-model="medicamento.Presentacion" 
                     v-bind:disabled="disable">
-                   
+                      <option value="capsulas">Capsulas</option>
+                      <option value="comprimidos">Comprimidos</option>
+                      <option value="sobres">Sobres</option>
+                      <option value="pomadas">Pomadas</option>
+                      <option value="inyecciones">Inyecciones</option>
+                      <option value="supositorios">Supositorios</option>
+                    </select>
+
+
                     <label for="fecha"> Fecha Caducidad: </label>
-                    <input type="text" name="fecha" value="Fecha" v-model="medicamento.FechaCaducidad" v-bind:disabled="disable">
+                    <input class="w3-input w3-border" type="date" name="fecha" value="Fecha" v-bind:disabled="disable" 
+                    v-model="medicamento.FechaCaducidad">
+
 
                     <button v-on:click="editable(modos.editar)" v-show="btnEditElim">Editar</button>
                     <button v-on:click="editable(modos.eliminar)" v-show="btnEditElim">Eliminar</button>
@@ -100,6 +110,8 @@ export default {
         {
             if(this.disable == true && mode == "editar")
             {
+                this.msgKo = false;
+                this.msgOk = false;
                 this.disable = false;
                 this.btnAceptarCancelar = false;
                 this.btnEditElim = false;
@@ -108,6 +120,8 @@ export default {
             }
             else if(this.disable == true && mode == "nuevo")
             {
+                this.msgKo = false;
+                this.msgOk = false;
                 this.modoNuevo = true;
                 this.modoDetalle = false;
                 this.mostrarDetallesContenedor = true;
@@ -120,11 +134,15 @@ export default {
             else if(this.disable == true && mode == "eliminar")
             {
                 //this.disable = false;
+                this.msgKo = false;
+                this.msgOk = false;
                 this.eliminarMedicamento();
 
             }
             else if(this.disable = false)
             {
+                this.msgKo = false;
+                this.msgOk = false;
                 this.disable = true;
             }
         },
@@ -173,7 +191,6 @@ export default {
             })
             .done(function(data) {
 
-              
               _this.refreshList();
               _this.mostrarMsgOk("eliminado");
               _this.msgKo = false;
@@ -225,6 +242,9 @@ export default {
 
         mostrarDetalles: function(id)
         {
+
+                this.msgKo = false;
+                this.msgOk = false;
 
                 if (this.mostrarDetallesContenedor == false) 
                 {
