@@ -11,34 +11,120 @@
           <i class="glyphicon glyphicon-remove"> &nbsp; </i> <strong>{{msg}}</strong>
         </div>
 
+        <div class="panel panel-info" name="listaPacientes" align="left">
+          <div class="panel-heading" align="center">
+            <h1>Pacientes</h1>
+          </div>
 
-        <div name="listaPacientes">
-            <ul>
-                <li>
-                    <h1>Pacientes</h1>
-                </li>
-                <li v-for="paciente in pacientes">
-                    <label for="nombre" v-on:click="mostrarDetalles(paciente.Id)"> Nombre: </label>
-                    <input type="text" name="nombre" v-model="paciente.Nombre" disabled="true"> 
-                    <label for="apellidos"> Apellidos: </label>
-                    <input type="text" name="apellidos" v-model="paciente.Apellidos" disabled="true">
-                </li> 
-            </ul>
+          <table class="table table-hover" style="width:30%;">
 
-            <br>
-            <button v-on:click="editable(modos.nuevo)">Nuevo Paciente</button>
-            <br>
+            <thead>
+              <tr align="center">
+                <th>Nombre</th>
+                <th>Apellidos</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr v-for="paciente in pacientes">
+                <td for="nombre" v-on:click="mostrarDetalles(paciente.Id)">{{paciente.Nombre}}</td>
+                <td for="apellidos">{{paciente.Apellidos}}</td>
+              </tr>
+            </tbody>
+
+          </table>
+
+           <br>
+           <button v-on:click="editable(modos.nuevo)">Nuevo Paciente</button>
+           <br>
 
         </div>
 
         <div name="detalles" v-show="mostrarDetallesContenedor">
+
+        <form v-on:submit.prevent class="form-horizontal">
+
+          <h1 v-show="modoDetalle"> Paciente : </h1>
+          <h1 v-show="modoNuevo"> Nuevo Paciente : </h1>
+          <br>
+
+          <div class="form-group row" >
+
+            <label for="nombreP" class="col-sm-2 col-form-label"> Nombre: </label>
+            <div class="col-sm-2">
+              <input class="form-control" type="text" name="nombreP" value="Nombre" v-model="paciente.Nombre" v-bind:disabled="disable">
+            </div>
+
+            <label for="apellidos" class="col-sm-2 col-form-label"> Apellidos: </label>
+            <div class="col-sm-2">
+              <input class="form-control" type="text" name="apellidos" value="Apellidos" v-model="paciente.Apellidos" v-bind:disabled="disable">
+            </div>
+
+          </div>
+
+          <div class="form-group row">
+
+            <label for="edad" class="col-sm-2 col-form-label"> Edad: </label>
+            <div class="col-sm-2">
+              <input class="form-control" type="numeric" name="edad" value="Edad" v-model="paciente.Edad" v-bind:disabled="disable">
+            </div>
+
+            <label for="sexo" class="col-sm-2 col-form-label"> Sexo: </label>
+             <div class="col-sm-1">
+              <label class="radio-inline">
+                <input type="radio" name="sexo" v-bind:disabled="disable" v-model="paciente.Sexo" value="Hombre"  
+                :checked="paciente.Sexo"> Hombre
+              </label>
+              </div>
+
+              <div class="col-sm-1">
+              <label class="radio-inline">
+                <input type="radio" name="sexo" v-bind:disabled="disable" v-model="paciente.Sexo" value="Mujer" 
+                :checked="!paciente.Sexo"> Mujer
+              </label>
+              </div>
+
+          </div>
+
+          <div class="form-group">
+
+            <label for="descripcion" class="col-sm-2 col-form-label"> Descripcion de la Dolencia: </label>
+            <div class="col-sm-2">
+              <textarea class="form-control" rows="3" style="background: white; resize: none; overflow: auto; text-overflow: ellipsis" type="string" 
+              name="descripcion" v-bind:disabled="disable" v-model="paciente.DescripcionDolencia"></textarea>
+            </div>
+
+            <label for="duracion" class="col-sm-2 col-form-label"> Duracion del tratamiento: (Dias) </label>
+            <div class="col-sm-2">
+              <input class="form-control" type="numeric" name="duracion" value="Duracion" v-model="paciente.DuracionTratamiento" v-bind:disabled="disable">
+            </div>
+
+          </div>
+
+          <button v-on:click="editable(modos.editar)" v-show="btnEditElim">Editar</button>
+          <button v-on:click="editable(modos.eliminar)" v-show="btnEditElim">Eliminar</button>
+          <button v-on:click="cerrarDetalles" v-show="btnEditElim">Cerrar</button>
+                    
+          <br>
+          <br>
+          <button v-on:click="validarPaciente(modos.crear)" v-show="btnAceptarCancelar">Aceptar</button>
+          <button v-on:click="cancelar" v-show="btnAceptarCancelar">Cancelar</button>
+
+          <br>
+          <button v-on:click="validarPaciente(modos.actualizar)" v-show="btnACtCancelar">Actualizar</button>
+          <button v-on:click="cancelar" v-show="btnACtCancelar">Cancelar</button>
+
+        </form>
+        </div>
+
+
+        <!--<div name="detalles" v-show="mostrarDetallesContenedor">
+          <div class="panel-heading">
+            <h1 v-show="modoDetalle"> Paciente : </h1>
+            <h1 v-show="modoNuevo"> Nuevo Paciente : </h1>
+          </div>
+
             <ul>
-                <li>
-                    <h1 v-show="modoDetalle"> Paciente : </h1>
-                </li>
-                <li>
-                    <h1 v-show="modoNuevo"> Nuevo Paciente : </h1>
-                </li>
                 <li>
                     <label for="nombreP"> Nombre: </label>
                     <input type="text" name="nombreP" value="Nombre" v-model="paciente.Nombre" v-bind:disabled="disable">
@@ -85,7 +171,7 @@
 
                 </li> 
             </ul>
-        </div>
+        </div>-->
 
     </div>
 </template>
@@ -478,34 +564,3 @@ export default {
 
 </script>
 
-<style scoped>
-#maestro {
-    width: 50%;
-}
-
-p {
-
-    text-decoration: overline;
-}
-
-h1{
-    width:100%;
-}
-
-ul {
-    width: 100%;
-}
-
-li {
-    list-style-type: none;
-    width:100%;
-}
-
-li:hover {
-    cursor: pointer;
-}
-
-.selected{
-    background-color:brown;
-}
-</style>

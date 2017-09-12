@@ -43,12 +43,9 @@
     </div>
     </div>
 
-    <div name="mdPaciente">
       <maestrodetallePaciente v-show="mdPacientesVisible"></maestrodetallePaciente>
-    </div>
-    <div name="mdMedicamento">
       <maestrodetalleMedicamento v-show="mdMedicamentosVisible"></maestrodetalleMedicamento>
-    </div>
+
     
   </div>
 
