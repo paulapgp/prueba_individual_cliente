@@ -12,7 +12,7 @@
        <div class="btn-group btn-group-lg">
 
       <li>
-        <button class="tablinks" name="home">
+        <button type="button" class="tablinks" name="home">
           <span class="round-tabs one">
             <i class="glyphicon glyphicon-home"></i>
           </span>
@@ -120,16 +120,6 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
-}
-
-h1, h2 {
-  font-weight: normal;
-}
-
-ul {
-  list-style-type: none;
-  padding: 0;
 }
 
 li {
@@ -137,13 +127,8 @@ li {
   margin: 0 10px;
 }
 
-a {
-  color: #42b983;
-}
-
 
 .tabcontent {
-    display: none;
     padding: 6px 12px;
     border: 1px solid #ccc;
     border-top: none;
@@ -166,7 +151,6 @@ div.tab {
 div.tab button {
     background-color: inherit;
     font-size: 20px;
-    float: left;
     border: none;
     outline: none;
     cursor: pointer;

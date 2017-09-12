@@ -1,61 +1,68 @@
 <template>
     <div id="maestrodetallePaciente">
 
-        <div class="alert alert-success alert-dismissable" v-show="this.msgOk" style="font-size: 18px; bold;">
-          <button type="button" class="close btn-sm" data-dismiss="alert" v-on:click.stop.prevent = "nuevaFuncion">&times;</button>
-          <i class="glyphicon glyphicon-ok"> &nbsp; </i> <strong>{{msg}}</strong>
-        </div>
-
-        <div class="alert alert-danger alert-dismissable" v-show="this.msgKo" style="font-size: 16px;">
-          <button type="button" class="close" data-dismiss="alert" v-on:click.stop.prevent = "nuevaFuncion">&times;</button>
-          <i class="glyphicon glyphicon-remove"> &nbsp; </i> <strong>{{msg}}</strong>
-        </div>
-
-        <div class="panel panel-info" name="listaPacientes" align="left">
-          <div class="panel-heading" align="center">
-            <h1>Pacientes</h1>
+        <div class="panel panel-info" name="listaPacientes" align="center">
+          <div class="panel-heading" style="height:60px">
+            <h1 style="margin-top:1px;">Pacientes</h1>
           </div>
 
-          <table class="table table-hover" style="width:30%;">
+          <table class="table table-hover" style="width:70%; text-align:center;" align="center">
 
-            <thead>
-              <tr align="center">
+            <thead style="width:70%;">
+              <tr>
                 <th>Nombre</th>
                 <th>Apellidos</th>
+                <th>Edad</th>
               </tr>
             </thead>
 
             <tbody>
-              <tr v-for="paciente in pacientes">
+              <tr v-for="paciente in pacientes" style="width:20%; text-align: left">
                 <td for="nombre" v-on:click="mostrarDetalles(paciente.Id)">{{paciente.Nombre}}</td>
-                <td for="apellidos">{{paciente.Apellidos}}</td>
+                <td for="apellidos" v-on:click="mostrarDetalles(paciente.Id)">{{paciente.Apellidos}}</td>
+                <td for="edad" v-on:click="mostrarDetalles(paciente.Id)">{{paciente.Edad}}</td>
+              </tr>
               </tr>
             </tbody>
 
           </table>
 
            <br>
-           <button v-on:click="editable(modos.nuevo)">Nuevo Paciente</button>
-           <br>
-
+           <button type="button" class="btn btn-success btn-lg center" v-on:click="editable(modos.nuevo)">
+           Nuevo Paciente
+           </button>
+          <br>
+          <br>
         </div>
 
-        <div name="detalles" v-show="mostrarDetallesContenedor">
+        <div class="alert alert-success alert-dismissable" v-show="this.msgOk" style="font-size: 18px; bold;">
+          <button type="button" class="close btn-sm" data-dismiss="alert" v-on:click.stop.prevent = "nuevaFuncion">&times;</button>
+          <i class="glyphicon glyphicon-ok"> &nbsp; </i> <strong>{{this.msg}}</strong>
+        </div>
 
-        <form v-on:submit.prevent class="form-horizontal">
+        <div class="alert alert-danger alert-dismissable" v-show="this.msgKo" style="font-size: 18px;">
+          <button type="button" class="close" data-dismiss="alert" v-on:click.stop.prevent = "nuevaFuncion">&times;</button>
+          <i class="glyphicon glyphicon-remove"> &nbsp; </i> <strong>{{this.msg}}</strong>
+        </div>
 
-          <h1 v-show="modoDetalle"> Paciente : </h1>
-          <h1 v-show="modoNuevo"> Nuevo Paciente : </h1>
-          <br>
+        <div class="panel panel-info" name="detalles" v-show="mostrarDetallesContenedor" align="right">
 
-          <div class="form-group row" >
+        <form v-on:submit.prevent class="form-horizontal" style="text-align:center;" align="right">
 
-            <label for="nombreP" class="col-sm-2 col-form-label"> Nombre: </label>
+          <div>
+            <h1 v-show="modoDetalle"> Paciente : </h1>
+            <h1 v-show="modoNuevo"> Nuevo Paciente : </h1>
+            <br>
+          </div>
+
+          <div class="form-group row">
+
+            <label for="nombreP" class="col-sm-3 col-form-label"> Nombre: </label>
             <div class="col-sm-2">
               <input class="form-control" type="text" name="nombreP" value="Nombre" v-model="paciente.Nombre" v-bind:disabled="disable">
             </div>
 
-            <label for="apellidos" class="col-sm-2 col-form-label"> Apellidos: </label>
+            <label for="apellidos" class="col-sm-3 col-form-label"> Apellidos: </label>
             <div class="col-sm-2">
               <input class="form-control" type="text" name="apellidos" value="Apellidos" v-model="paciente.Apellidos" v-bind:disabled="disable">
             </div>
@@ -64,12 +71,12 @@
 
           <div class="form-group row">
 
-            <label for="edad" class="col-sm-2 col-form-label"> Edad: </label>
+            <label for="edad" class="col-sm-3 col-form-label"> Edad: </label>
             <div class="col-sm-2">
               <input class="form-control" type="numeric" name="edad" value="Edad" v-model="paciente.Edad" v-bind:disabled="disable">
             </div>
 
-            <label for="sexo" class="col-sm-2 col-form-label"> Sexo: </label>
+            <label for="sexo" class="col-sm-3 col-form-label"> Sexo: </label>
              <div class="col-sm-1">
               <label class="radio-inline">
                 <input type="radio" name="sexo" v-bind:disabled="disable" v-model="paciente.Sexo" value="Hombre"  
@@ -88,31 +95,28 @@
 
           <div class="form-group">
 
-            <label for="descripcion" class="col-sm-2 col-form-label"> Descripcion de la Dolencia: </label>
+            <label for="descripcion" class="col-sm-3 col-form-label"> Descripcion de la Dolencia: </label>
             <div class="col-sm-2">
               <textarea class="form-control" rows="3" style="background: white; resize: none; overflow: auto; text-overflow: ellipsis" type="string" 
               name="descripcion" v-bind:disabled="disable" v-model="paciente.DescripcionDolencia"></textarea>
             </div>
 
-            <label for="duracion" class="col-sm-2 col-form-label"> Duracion del tratamiento: (Dias) </label>
+            <label for="duracion" class="col-sm-3 col-form-label"> Duracion del tratamiento: (Dias) </label>
             <div class="col-sm-2">
               <input class="form-control" type="numeric" name="duracion" value="Duracion" v-model="paciente.DuracionTratamiento" v-bind:disabled="disable">
             </div>
 
           </div>
 
-          <button v-on:click="editable(modos.editar)" v-show="btnEditElim">Editar</button>
-          <button v-on:click="editable(modos.eliminar)" v-show="btnEditElim">Eliminar</button>
-          <button v-on:click="cerrarDetalles" v-show="btnEditElim">Cerrar</button>
-                    
+          <button class="btn btn-success" v-on:click="editable(modos.editar)" v-show="btnEditElim">Editar</button>
+          <button class="btn btn-danger" v-on:click="editable(modos.eliminar)" v-show="btnEditElim">Eliminar</button>
+          <button class="btn btn-default" v-on:click="cerrarDetalles" v-show="btnEditElim">Cerrar</button>
+        
           <br>
-          <br>
-          <button v-on:click="validarPaciente(modos.crear)" v-show="btnAceptarCancelar">Aceptar</button>
-          <button v-on:click="cancelar" v-show="btnAceptarCancelar">Cancelar</button>
-
-          <br>
-          <button v-on:click="validarPaciente(modos.actualizar)" v-show="btnACtCancelar">Actualizar</button>
-          <button v-on:click="cancelar" v-show="btnACtCancelar">Cancelar</button>
+          <button class="btn btn-primary" v-on:click="validarPaciente(modos.crear)" v-show="btnAceptarCancelar">Aceptar</button>
+          <button class="btn btn-default" v-on:click="cancelar" v-show="btnAceptarCancelar">Cancelar</button>
+          <button class="btn btn-primary" v-on:click="validarPaciente(modos.actualizar)" v-show="btnACtCancelar">Actualizar</button>
+          <button class="btn btn-default" v-on:click="cancelar" v-show="btnACtCancelar">Cancelar</button>
 
         </form>
         </div>
@@ -564,3 +568,15 @@ export default {
 
 </script>
 
+<style scoped>
+
+.listaPacientes {
+    float: left;
+}
+
+.detalles {
+
+  float: right;
+}
+
+</style>
