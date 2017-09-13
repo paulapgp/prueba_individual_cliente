@@ -1,7 +1,51 @@
 <template>
     <div id="maestrodetalleMedicamento">
 
-       <div class="alert alert-success alert-dismissable" v-show="this.msgOk" style="font-size: 18px; bold;">
+      <div class="panel panel-info" name="listaMedicamentos" style="margin-bottom:0px;" align="center">
+        <div class="panel-heading" style="height:60px">
+          <h1 style="margin-top:1px;">Medicamentos</h1>
+        </div>
+        <br>
+
+        <table class="table table-hover" style="width:70%; text-align:center;" align="center">
+
+          <thead style="width:70%;">
+              <tr>
+                <th>Nombre</th>
+                <th>Tipo</th>
+                <th>Presentación</th>
+              </tr>
+          </thead>
+
+          <tbody>
+            <tr v-for="medicamento in medicamentos" style="width:20%; text-align: left">
+              <td for="nombre" v-on:click="mostrarDetalles(medicamento.Id)">
+                {{medicamento.Nombre}}
+              </td>
+
+              <td for="tipo" v-on:click="mostrarDetalles(medicamento.Id)">
+                {{medicamento.Tipo}}
+              </td>
+
+              <td for="presentacion" v-on:click="mostrarDetalles(medicamento.Id)">
+                {{medicamento.Presentacion}}
+              </td>
+            </tr>
+            </tr>
+          </tbody>
+
+        </table>
+
+        <br>
+        <button type="button" class="btn btn-success btn-lg center" v-on:click="editable(modos.nuevo)">
+        Nuevo Medicamento
+        </button>
+        <br>
+        <br>
+
+      </div>
+
+        <div class="alert alert-success alert-dismissable" v-show="this.msgOk" style="font-size: 18px; bold;">
           <button type="button" class="close btn-sm" data-dismiss="alert" v-on:click.stop.prevent = "nuevaFuncion">&times;</button>
           <i class="glyphicon glyphicon-ok"> &nbsp; </i> <strong>{{msg}}</strong>
         </div>
@@ -11,74 +55,73 @@
           <i class="glyphicon glyphicon-remove"> &nbsp; </i> <strong>{{msg}}</strong>
         </div>
 
+        <div class="panel panel-info" style="margin-bottom:0px;" name="detalles" v-show="mostrarDetallesContenedor" align="right">
 
-        <div name="listaMedicamentos">
-            <ul>
-                <li>
-                    <h1>Medicamentos</h1>
-                </li>
-                <li v-for="medicamento in medicamentos">
-                    <label for="nombre" v-on:click="mostrarDetalles(medicamento.Id)"> Medicamento: </label>
-                    <input type="text" name="nombre" v-model="medicamento.Nombre" disabled="true"> 
-                </li> 
-            </ul>
+        <form v-on:submit.prevent class="form-horizontal" style="text-align:center;" align="right">
 
+          <div>
+            <h1 v-show="modoDetalle"> Medicamento : </h1>
+            <h1 v-show="modoNuevo"> Nuevo Medicamento : </h1>
             <br>
-            <button v-on:click="editable(modos.nuevo)">Nuevo Medicamento</button>
-            <br>
+          </div>
 
-        </div>
+          <div class="form-group row">
 
-        <div name="detalles" v-show="mostrarDetallesContenedor">
-            <ul>
-                <li>
-                    <h1 v-show="modoDetalle"> Medicamento : </h1>
-                </li>
-                <li>
-                    <h1 v-show="modoNuevo"> Nuevo Medicamento : </h1>
-                </li>
-                <li>
-                    <label for="nombreM"> Nombre: </label>
-                    <input type="text" name="nombreM" value="Nombre" v-model="medicamento.Nombre" v-bind:disabled="disable">
-                    
-                    <label for="tipo"> Tipo: </label>
-                    <input type="text" name="tipo" value="Tipo" v-model="medicamento.Tipo" v-bind:disabled="disable">
-                   
-                    <label for="presentacion"> Presentacion: </label>
-                    <select class="w3-select w3-border" name="presentacion" value="Presentacion" v-model="medicamento.Presentacion" 
-                    v-bind:disabled="disable">
-                      <option value="capsulas">Capsulas</option>
-                      <option value="comprimidos">Comprimidos</option>
-                      <option value="sobres">Sobres</option>
-                      <option value="pomadas">Pomadas</option>
-                      <option value="inyecciones">Inyecciones</option>
-                      <option value="supositorios">Supositorios</option>
-                    </select>
+            <label for="nombreM" class="col-sm-2 col-form-label"> Nombre: </label>
+            <div class="col-sm-3">
+              <input class="form-control" type="text" name="nombreM" value="Nombre" v-model="medicamento.Nombre" v-bind:disabled="disable">
+            </div>
 
+            <label for="tipo" class="col-sm-2 col-form-label"> Tipo: </label>
+            <div class="col-sm-3">
+              
+              <input class="form-control" type="text" name="tipo" value="Tipo" v-model="medicamento.Tipo" v-bind:disabled="disable">
+            </div>
 
-                    <label for="fecha"> Fecha Caducidad: </label>
-                    <input class="w3-input w3-border" type="date" name="fecha" value="Fecha" v-bind:disabled="disable" 
-                    v-model="medicamento.FechaCaducidad">
+          </div>
 
+          <div class="form-group row">
 
-                    <button v-on:click="editable(modos.editar)" v-show="btnEditElim">Editar</button>
-                    <button v-on:click="editable(modos.eliminar)" v-show="btnEditElim">Eliminar</button>
-                    <button v-on:click="cerrarDetalles" v-show="btnEditElim">Cerrar</button>
-                    
-                    <br>
-                    <br>
-                    <button v-on:click="validarMedicamento(modos.crear)" v-show="btnAceptarCancelar">Aceptar</button>
-                    <button v-on:click="cancelar" v-show="btnAceptarCancelar">Cancelar</button>
+            <label for="presentacion" class="col-sm-2 col-form-label"> Presentación: </label>
+            <div class="col-sm-3">
+              
+              <select class="form-control" name="presentacion" value="Presentacion" v-model="medicamento.Presentacion" 
+              v-bind:disabled="disable">
+                <option value="Cápsulas">Cápsulas</option>
+                <option value="Comprimidos">Comprimidos</option>
+                <option value="Sobres">Sobres</option>
+                <option value="Pomadas">Pomadas</option>
+                <option value="Inyecciones">Inyecciones</option>
+                <option value="Supositorios">Supositorios</option>
+              </select>
+            </div>
 
-                    <br>
-                    <button v-on:click="validarMedicamento(modos.actualizar)" v-show="btnACtCancelar">Actualizar</button>
-                    <button v-on:click="cancelar" v-show="btnACtCancelar">Cancelar</button>
+            <label for="fecha" class="col-sm-2 col-form-label"> Fecha Caducidad: </label>
+            <div class="col-sm-3">
+              
+              <input class="form-control" type="date" name="fecha" value="Fecha" v-bind:disabled="disable" 
+              v-model="medicamento.FechaCaducidad">
+            </div>
 
-                </li> 
-            </ul>
-        </div>
+          </div>
 
+          <br>
+          <br>
+          <button class="btn btn-success" v-on:click="editable(modos.editar)" v-show="btnEditElim">Editar</button>
+          <button class="btn btn-danger" v-on:click="editable(modos.eliminar)" v-show="btnEditElim">Eliminar</button>
+          <button class="btn btn-default" v-on:click="cerrarDetalles" v-show="btnEditElim">Cerrar</button>
+
+          <button class="btn btn-primary" v-on:click="validarMedicamento(modos.crear)" v-show="btnAceptarCancelar">Aceptar</button>
+          <button class="btn btn-default" v-on:click="cancelar" v-show="btnAceptarCancelar">Cancelar</button>
+          <button class="btn btn-primary" v-on:click="validarMedicamento(modos.actualizar)" v-show="btnACtCancelar">Actualizar</button>
+          <button class="btn btn-default" v-on:click="cancelar" v-show="btnACtCancelar">Cancelar</button>
+          <br>
+          <br>
+
+      </form>
     </div>
+    </div>
+
 </template>
 
 <script>
@@ -352,7 +395,7 @@ export default {
           } else if(data == "error")
           {
             
-            this.msg = "¡ Ha ocurrido un error, vuelva a intentarlo !"
+            this.msg = "¡ Se ha producido un error, vuelva a intentarlo !"
             this.msgOk = true;
             
           }
@@ -392,27 +435,37 @@ export default {
         {
           if(this.medicamento.Nombre == '')
           {
-            this.msg = "El nombre del medicamento no puede estar vacío."
+            this.msg = "El Nombre del medicamento no puede estar vacío."
+            this.msgKo = true;
+          }
+          else if (this.isNumeric(this.medicamento.Nombre))
+          {
+            this.msg = "El Nombre del medicamento no puede ser un número."
             this.msgKo = true;
           }
           else if (this.medicamento.Nombre.length <= 0 || this.medicamento.Nombre.length >= 31)
           {
-            this.msg = "El nombre del medicamento debe tener entre 1 y 30 caracteres."
+            this.msg = "El Nombre del medicamento debe tener entre 1 y 30 caracteres."
             this.msgKo = true;
           }
           else if (this.medicamento.Tipo == '')
           {
-            this.msg = "El tipo del medicamento no puede estar vacío."
+            this.msg = "El Tipo del medicamento no puede estar vacío."
+            this.msgKo = true;
+          }
+          else if (this.isNumeric(this.medicamento.Tipo))
+          {
+            this.msg = "El Tipo del medicamento no puede ser un número."
             this.msgKo = true;
           }
           else if (this.medicamento.Presentacion == '')
           {
-            this.msg = "Debe seleccionar un valor de presentacion del medicamento."
+            this.msg = "Debe seleccionar un valor de Presentación del medicamento."
             this.msgKo = true;
           }
           else if (this.medicamento.FechaCaducidad == '')
           {
-            this.msg = "La fecha de caducidad no es correcta, seleccione una de nuevo."
+            this.msg = "La Fecha de Caducidad no es correcta, seleccione una de nuevo."
             this.msgKo = true;
           }
           else
@@ -427,6 +480,10 @@ export default {
             }
             
           }
+        },
+
+        isNumeric: function(n) {
+          return !isNaN(parseFloat(n)) && isFinite(n);
         },
 
         nuevaFuncion: function()

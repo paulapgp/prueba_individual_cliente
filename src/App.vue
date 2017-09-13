@@ -3,7 +3,7 @@
     <div class="p-3 mb-2 bg-primary text-white">
     <div class="row">
 
-    <h1>Recetas Electrónicas</h1>
+    <h1 style="font-size:50px;">Recetas Electrónicas</h1>
 
     <div class="board-inner">
 
@@ -11,19 +11,13 @@
 
        <div class="btn-group btn-group-lg">
 
-      <li>
-        <button type="button" class="tablinks" name="home">
-          <span class="round-tabs one">
-            <i class="glyphicon glyphicon-home"></i>
-          </span>
-        </button>
-      </li>
-
        <li>
         <button class="tablinks" name="medicamentos" v-on:click="verMedicamentos">
           <span class="round-tabs one">
             <i class="glyphicon glyphicon-barcode"></i>
           </span>
+          <br>
+          Medicamentos
         </button>
       </li>
 
@@ -32,6 +26,8 @@
           <span class="round-tabs one">
             <i class="glyphicon glyphicon-user"></i>
           </span>
+          <br>
+          Pacientes
         </button>
       </li>
 

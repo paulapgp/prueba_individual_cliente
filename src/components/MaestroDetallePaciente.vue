@@ -1,10 +1,11 @@
 <template>
     <div id="maestrodetallePaciente">
 
-        <div class="panel panel-info" name="listaPacientes" align="center">
+        <div class="panel panel-info" name="listaPacientes" style="margin-bottom:0px;" align="center">
           <div class="panel-heading" style="height:60px">
             <h1 style="margin-top:1px;">Pacientes</h1>
           </div>
+          <br>
 
           <table class="table table-hover" style="width:70%; text-align:center;" align="center">
 
@@ -45,7 +46,7 @@
           <i class="glyphicon glyphicon-remove"> &nbsp; </i> <strong>{{this.msg}}</strong>
         </div>
 
-        <div class="panel panel-info" name="detalles" v-show="mostrarDetallesContenedor" align="right">
+        <div class="panel panel-info" style="margin-bottom:0px;" name="detalles" v-show="mostrarDetallesContenedor" align="right">
 
         <form v-on:submit.prevent class="form-horizontal" style="text-align:center;" align="right">
 
@@ -93,89 +94,35 @@
 
           </div>
 
-          <div class="form-group">
+          <div class="form-group row">
 
-            <label for="descripcion" class="col-sm-3 col-form-label"> Descripcion de la Dolencia: </label>
+            <label for="descripcion" class="col-sm-3 col-form-label"> Descripción de la Dolencia: </label>
             <div class="col-sm-2">
               <textarea class="form-control" rows="3" style="background: white; resize: none; overflow: auto; text-overflow: ellipsis" type="string" 
               name="descripcion" v-bind:disabled="disable" v-model="paciente.DescripcionDolencia"></textarea>
             </div>
 
-            <label for="duracion" class="col-sm-3 col-form-label"> Duracion del tratamiento: (Dias) </label>
+            <label for="duracion" class="col-sm-3 col-form-label"> Duración del tratamiento: (Dias) </label>
             <div class="col-sm-2">
               <input class="form-control" type="numeric" name="duracion" value="Duracion" v-model="paciente.DuracionTratamiento" v-bind:disabled="disable">
             </div>
 
           </div>
 
+          <br>
           <button class="btn btn-success" v-on:click="editable(modos.editar)" v-show="btnEditElim">Editar</button>
           <button class="btn btn-danger" v-on:click="editable(modos.eliminar)" v-show="btnEditElim">Eliminar</button>
           <button class="btn btn-default" v-on:click="cerrarDetalles" v-show="btnEditElim">Cerrar</button>
-        
-          <br>
+
           <button class="btn btn-primary" v-on:click="validarPaciente(modos.crear)" v-show="btnAceptarCancelar">Aceptar</button>
           <button class="btn btn-default" v-on:click="cancelar" v-show="btnAceptarCancelar">Cancelar</button>
           <button class="btn btn-primary" v-on:click="validarPaciente(modos.actualizar)" v-show="btnACtCancelar">Actualizar</button>
           <button class="btn btn-default" v-on:click="cancelar" v-show="btnACtCancelar">Cancelar</button>
+          <br>
+          <br>
 
         </form>
-        </div>
-
-
-        <!--<div name="detalles" v-show="mostrarDetallesContenedor">
-          <div class="panel-heading">
-            <h1 v-show="modoDetalle"> Paciente : </h1>
-            <h1 v-show="modoNuevo"> Nuevo Paciente : </h1>
-          </div>
-
-            <ul>
-                <li>
-                    <label for="nombreP"> Nombre: </label>
-                    <input type="text" name="nombreP" value="Nombre" v-model="paciente.Nombre" v-bind:disabled="disable">
-                    
-                    <label for="apellidos"> Apellidos: </label>
-                    <input type="text" name="apellidos" value="Apellidos" v-model="paciente.Apellidos" v-bind:disabled="disable">
-
-                    <br>
-
-                    <label for="edad"> Edad: </label>
-                    <input type="numeric" name="edad" value="Edad" v-model="paciente.Edad" v-bind:disabled="disable">
-                   
-                    <label for="sexo"> Sexo: </label>
-                    <input type="radio" name="sexo" v-bind:disabled="disable" v-model="paciente.Sexo" value="Hombre"  :checked="paciente.Sexo"> Hombre
-                    <input type="radio" name="sexo" v-bind:disabled="disable" v-model="paciente.Sexo" value="Mujer" :checked="!paciente.Sexo"> Mujer
-                   
-                    <br>
-
-                    <label for="descripcion"> Descripcion de la Dolencia: </label>
-                    <br>
-                    <textarea rows="3" style="background: white; resize: none; overflow: auto; text-overflow: ellipsis" 
-                    type="string" name="descripcion" v-bind:disabled="disable" v-model="paciente.DescripcionDolencia"> </textarea>
-
-                    <br>
-
-                    <label for="duracion"> Duracion del tratamiento: (Dias) </label>
-                    <input type="numeric" name="duracion" value="Duracion" v-model="paciente.DuracionTratamiento" 
-                    v-bind:disabled="disable">
-
-                    <br>
-
-                    <button v-on:click="editable(modos.editar)" v-show="btnEditElim">Editar</button>
-                    <button v-on:click="editable(modos.eliminar)" v-show="btnEditElim">Eliminar</button>
-                    <button v-on:click="cerrarDetalles" v-show="btnEditElim">Cerrar</button>
-                    
-                    <br>
-                    <br>
-                    <button v-on:click="validarPaciente(modos.crear)" v-show="btnAceptarCancelar">Aceptar</button>
-                    <button v-on:click="cancelar" v-show="btnAceptarCancelar">Cancelar</button>
-
-                    <br>
-                    <button v-on:click="validarPaciente(modos.actualizar)" v-show="btnACtCancelar">Actualizar</button>
-                    <button v-on:click="cancelar" v-show="btnACtCancelar">Cancelar</button>
-
-                </li> 
-            </ul>
-        </div>-->
+        </div>  
 
     </div>
 </template>
@@ -451,7 +398,7 @@ export default {
           } else if(data == "error")
           {
             
-            this.msg = "¡ Ha ocurrido un error, vuelva a intentarlo !"
+            this.msg = "¡ Se ha producido un error, vuelva a intentarlo !"
             this.msgOk = true;
             
           }
@@ -491,37 +438,52 @@ export default {
         {
           if(this.paciente.Nombre == '')
           {
-            this.msg = "El nombre del paciente no puede estar vacío."
+            this.msg = "El Nombre del paciente no puede estar vacío."
+            this.msgKo = true;
+          }
+          else if (this.isNumeric(this.paciente.Nombre))
+          {
+            this.msg = "El Nombre del paciente no puede ser un número."
             this.msgKo = true;
           }
           else if (this.paciente.Nombre.length <= 1 || this.paciente.Nombre.length >= 31)
           {
-            this.msg = "El nombre del paciente debe tener entre 1 y 30 caracteres."
+            this.msg = "El Nombre del paciente debe tener entre 1 y 30 caracteres."
             this.msgKo = true;
           }
           else if (this.paciente.Apellidos == '')
           {
-            this.msg = "Los apellidos del paciente no pueden estar vacíos."
+            this.msg = "Los Apellidos del paciente no pueden estar vacíos."
+            this.msgKo = true;
+          }
+          else if (this.isNumeric(this.paciente.Apellidos))
+          {
+            this.msg = "Los Apellidos del paciente no pueden ser un número."
             this.msgKo = true;
           }
           else if (this.paciente.Sexo == '')
           {
-            this.msg = "Debe seleccionar el sexo del paciente."
+            this.msg = "Debe seleccionar el Sexo del paciente."
             this.msgKo = true;
           }
           else if ( !this.isInt(this.paciente.Edad) || this.paciente.Edad == '' || this.paciente.Edad < 1 || this.paciente.Edad > 99)
           {
-            this.msg = "La edad del paciente debe ser un numero entre 1 y 100."
+            this.msg = "La Edad del paciente debe ser un número entre 1 y 100."
             this.msgKo = true;
           }
           else if (this.paciente.DescripcionDolencia == '')
           {
-            this.msg = "Por favor, escriba brevemente la dolencia del paciente."
+            this.msg = "Por favor, describa brevemente la Dolencia del paciente."
+            this.msgKo = true;
+          }
+          else if (this.isNumeric(this.paciente.DescripcionDolencia))
+          {
+            this.msg = "La Descripción de la Dolencia no puede ser un número."
             this.msgKo = true;
           }
           else if (!this.isInt(this.paciente.DuracionTratamiento) || this.paciente.DuracionTratamiento == '')
           {
-            this.msg = "La duracion del tratamiento no es correcta, introduzca la duracion en días."
+            this.msg = "La Duración del Tratamiento no es correcta, introdúzca la duracion en días."
             this.msgKo = true;
           }
           else
@@ -542,6 +504,10 @@ export default {
         {
           this.msgOk = false;
           this.msgKo = false;
+        },
+
+         isNumeric: function(n) {
+          return !isNaN(parseFloat(n)) && isFinite(n);
         },
 
         isInt: function(n) {
